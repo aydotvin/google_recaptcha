@@ -1,25 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import { useRef, useState } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const captchaSiteKey = "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI";
+
+const App = () => {
+	const captchaElement = useRef(null);
+	const [disableButton, setDisableButton] = useState(true);
+
+	const handleCaptchaChange = (ev) => {
+		console.log(ev);
+		setDisableButton(false);
+	};
+	const handleCaptchaExpiry = (ev) => {
+		console.log(ev);
+		setDisableButton(true);
+	};
+
+	return (
+		<div>
+			<h2>Google recaptcha test</h2>
+			<ReCAPTCHA ref={captchaElement} sitekey={captchaSiteKey} onChange={handleCaptchaChange} onExpired={handleCaptchaExpiry} />
+			<button disabled={disableButton} style={{ marginTop: "10px" }}>
+				Submit
+			</button>
+		</div>
+	);
+};
 
 export default App;
